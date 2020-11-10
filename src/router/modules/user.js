@@ -3,30 +3,30 @@ import Layout from '@/layout'
 const userRouter = {
   path: '/user',
   component: Layout,
-  redirect: '/user/graph',
+  redirect: '/dashboard',
   name: 'User',
   meta: {
-    title: '用户分析',
+    title: '用户画像',
     icon: 'user'
   },
   children: [
     {
-      path: 'graph',
-      component: () => import('@/views/user/graph'), // Parent router-view
-      name: 'Graph',
-      meta: { title: '用户画像' }
+      path: 'base',
+      name: 'User_Base',
+      component: () => import('@/views/user/base'),
+      meta: { title: '基本情况' }
+    },
+    {
+      path: 'topic',
+      name: 'User_Topic',
+      component: () => import('@/views/user/topic'),
+      meta: { title: '相关议题' }
     },
     {
       path: 'group',
-      name: 'Group',
+      name: 'User_Group',
       component: () => import('@/views/user/group'),
-      meta: { title: '社群检测' }
-    },
-    {
-      path: 'search',
-      name: 'Search',
-      component: () => import('@/views/user/search'),
-      meta: { title: '关联检索' }
+      meta: { title: '群体关系' }
     }
   ]
 }

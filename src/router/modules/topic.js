@@ -3,36 +3,42 @@ import Layout from '@/layout'
 const topicRouter = {
   path: '/topic',
   component: Layout,
-  redirect: '/topic/index',
+  redirect: '/dashboard',
   name: 'Topic',
   meta: {
-    title: '话题分析',
+    title: '议题画像',
     icon: 'message'
   },
   children: [
     {
-      path: 'index',
-      component: () => import('@/views/topic/index'), // Parent router-view
-      name: 'Index',
-      meta: { title: '事件概览' }
+      path: 'base',
+      component: () => import('@/views/topic/base'), // Parent router-view
+      name: 'Topic_Base',
+      meta: { title: '基本情况' }
     },
     {
-      path: 'feature',
-      name: 'Feature',
-      component: () => import('@/views/topic/feature'),
-      meta: { title: '专题事件' }
+      path: 'topic',
+      component: () => import('@/views/topic/topic'), // Parent router-view
+      name: 'Topic_Topic',
+      meta: { title: '相关话题' }
     },
     {
-      path: 'scene',
-      name: 'Scene',
-      component: () => import('@/views/topic/scene'),
-      meta: { title: '场景事件' }
+      path: 'user',
+      component: () => import('@/views/topic/user'), // Parent router-view
+      name: 'Topic_User',
+      meta: { title: '关键用户' }
     },
     {
-      path: 'politics',
-      name: 'Politics',
-      component: () => import('@/views/topic/politics'),
-      meta: { title: '政治议题' }
+      path: 'spread',
+      component: () => import('@/views/topic/spread'), // Parent router-view
+      name: 'Topic_Spread',
+      meta: { title: '扩散传播' }
+    },
+    {
+      path: 'strategy',
+      component: () => import('@/views/topic/strategy'), // Parent router-view
+      name: 'Topic_Strategy',
+      meta: { title: '推荐策略' }
     }
   ]
 }

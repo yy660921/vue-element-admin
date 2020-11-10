@@ -9,7 +9,6 @@ import Layout from '@/layout'
 /* Router Modules */
 import userRouter from './modules/user'
 import topicRouter from '@/router/modules/topic'
-import spreadRouter from '@/router/modules/spread'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -76,15 +75,53 @@ export const constantRoutes = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/overview/dashboard'),
         name: '首页',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
+  {
+    path: '/overview',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/overview/user'),
+        name: '用户概览',
+        meta: { title: '用户概览', icon: 'peoples', affix: true }
+      }
+    ]
+  },
   userRouter,
+  {
+    path: '/overview',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/overview/topic'),
+        name: '议题概览',
+        meta: { title: '议题概览', icon: 'message', affix: true }
+      }
+    ]
+  },
   topicRouter,
-  spreadRouter
+  {
+    path: '/overview',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'strategy',
+        component: () => import('@/views/overview/strategy'),
+        name: '策略库',
+        meta: { title: '策略库', icon: 'form', affix: true }
+      }
+    ]
+  }
 ]
 
 /**

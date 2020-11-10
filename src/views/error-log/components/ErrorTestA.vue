@@ -1,15 +1,13 @@
 <template>
   <div>
-    事件概览
+    <!--error code-->
+    {{ a.a }}
+    <!--error code-->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Index'
+  name: 'ErrorTestA'
 }
 </script>
-
-<style scoped>
-
-</style>

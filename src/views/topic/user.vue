@@ -1,10 +1,10 @@
 <template>
-  <div class="user-container">
+  <div class="topic-container">
     <el-row :gutter="32">
       <el-col :md="12" :lg="12">
         <el-card class="box-card">
           <div slot="header">
-            <span>群体关系图</span>
+            <span>传播扩散图</span>
           </div>
           <el-row :gutter="32">
             <el-col :md="24" :lg="24">
@@ -16,13 +16,13 @@
       <el-col :md="12" :lg="12">
         <el-card class="box-card">
           <div slot="header">
-            <span>用户相关议题</span>
+            <span>传播关键用户</span>
           </div>
           <el-row :gutter="32">
-            <el-col :md="6" :lg="6">
+            <el-col :md="5" :lg="5">
               <el-avatar :size="150" :src="user_info.avatar" />
             </el-col>
-            <el-col :md="8" :lg="8">
+            <el-col :md="9" :lg="9">
               <div>
                 <div class="info_list">
                   <div class="info">
@@ -31,63 +31,62 @@
                   <div class="info">
                     <el-row :gutter="8" class="info">
                       <el-col :md="8" :lg="8">
-                        <span>年龄</span>
+                        <span>关注数</span>
                       </el-col>
                       <el-col :md="16" :lg="16">
-                        <span>{{ user_info.age }}</span>
+                        <span>{{ user_info.following }}</span>
                       </el-col>
                     </el-row>
                   </div>
                   <div class="info">
                     <el-row :gutter="8" class="info">
                       <el-col :md="8" :lg="8">
-                        <span>性别</span>
+                        <span>粉丝数</span>
                       </el-col>
                       <el-col :md="16" :lg="16">
-                        <span>{{ user_info.gender }}</span>
+                        <span>{{ user_info.follower }}</span>
                       </el-col>
                     </el-row>
                   </div>
                   <div class="info">
                     <el-row :gutter="8" class="info">
                       <el-col :md="8" :lg="8">
-                        <span>地点</span>
+                        <span>转发数</span>
                       </el-col>
                       <el-col :md="16" :lg="16">
-                        <span>{{ user_info.location }}</span>
+                        <span>{{ user_info.repost_count }}</span>
                       </el-col>
                     </el-row>
                   </div>
                   <div class="info">
                     <el-row :gutter="8" class="info">
                       <el-col :md="8" :lg="8">
-                        <span>关注内容</span>
+                        <span>转发时间</span>
                       </el-col>
                       <el-col :md="16" :lg="16">
-                        <el-tag v-for="tag in user_info.tags" :key="tag" :hint="true" class="tag_item">{{ tag }}</el-tag>
+                        <span>{{ user_info.repost_time }}</span>
                       </el-col>
                     </el-row>
                   </div>
                 </div>
               </div>
             </el-col>
-            <el-col :md="8" :lg="8">
-              <div style="float: right">
-                在本次事件中共参与5次
-              </div>
+            <el-col :md="10" :lg="10">
+              <el-row :gutter="8">
+                <el-col :span="6">
+                  转发内容
+                </el-col>
+                <el-col :span="18" class="repost_content" :title="user_info.repost_content">
+                  {{ user_info.repost_content }}
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
           <el-divider />
-          <el-row class="timeline_list">
-            <el-timeline>
-              <el-timeline-item
-                v-for="activity in user_info.hot_posts"
-                :key="activity.time"
-                :timestamp="activity.time"
-              >
-                {{ activity.activity }}
-              </el-timeline-item>
-            </el-timeline>
+          <el-row class="post_line">
+            <el-steps :active="user_info.selected">
+              <el-step v-for="user in user_info.post_line" :key="user" :title="user" />
+            </el-steps>
           </el-row>
         </el-card>
       </el-col>
@@ -120,7 +119,7 @@
       <el-col :md="7" :lg="7">
         <el-card>
           <div slot="header">
-            <span>关联程度</span>
+            <span>紧密程度</span>
           </div>
           <el-row v-for="relation in related_scale" :key="relation.id" :gutter="32" class="relation_line">
             <el-col :span="6">
@@ -143,14 +142,14 @@
 <script>
 import MixChart from '../../components/Charts/MixChart'
 export default {
-  name: 'Group',
+  name: 'User',
   components: { MixChart },
   data() {
     return {
       group_graph_option: {
         tooltip: {},
         legend: [{
-          data: ['关键参与者', '一般用户']
+          data: ['议题', '关键参与者', '一般用户']
         }],
         animationDuration: 1500,
         animationEasingUpdate: 'quinticInOut',
@@ -161,9 +160,17 @@ export default {
             layout: 'force',
             data: [
               {
+                id: 1,
+                name: '反送中',
+                category: 0,
+                label: {
+                  show: true
+                }
+              },
+              {
                 id: 2,
                 name: 'BBC News 中文',
-                category: 0,
+                category: 1,
                 label: {
                   show: true
                 }
@@ -171,7 +178,7 @@ export default {
               {
                 id: 3,
                 name: '纽约时报中文网',
-                category: 0,
+                category: 1,
                 label: {
                   show: true
                 }
@@ -179,7 +186,7 @@ export default {
               {
                 id: 4,
                 name: '吳文遠 Avery Ng',
-                category: 0,
+                category: 1,
                 label: {
                   show: true
                 }
@@ -187,7 +194,7 @@ export default {
               {
                 id: 5,
                 name: 'ABC中文',
-                category: 0,
+                category: 1,
                 label: {
                   show: true
                 }
@@ -195,7 +202,7 @@ export default {
               {
                 id: 6,
                 name: 'poon siu to潘小濤',
-                category: 0,
+                category: 1,
                 label: {
                   show: true
                 }
@@ -203,7 +210,7 @@ export default {
               {
                 id: 7,
                 name: 'Wong Ji Yuet 黃子悅',
-                category: 0,
+                category: 1,
                 label: {
                   show: true
                 }
@@ -211,316 +218,180 @@ export default {
               {
                 id: 8,
                 name: 'Jason Chen',
-                category: 1
+                category: 2
               },
               {
                 id: 9,
                 name: '成忠',
-                category: 1
+                category: 2
               },
               {
                 id: 10,
                 name: 'kevin shen',
-                category: 1
+                category: 2
               },
               {
                 id: 11,
                 name: 'Houseless M.D.',
-                category: 1
+                category: 2
               },
               {
                 id: 12,
                 name: 'Kaka_hk',
-                category: 1
+                category: 2
               },
               {
                 id: 13,
                 name: 'Daniel Zhang',
-                category: 1
+                category: 2
               },
               {
                 id: 14,
                 name: 'Sheldon C.',
-                category: 1
+                category: 2
               },
               {
                 id: 15,
                 name: 'benleebenbenlee',
-                category: 1
+                category: 2
               },
               {
                 id: 16,
                 name: '人革联',
-                category: 1
+                category: 2
               },
               {
                 id: 17,
                 name: 'Qianyi Zhou',
-                category: 1
+                category: 2
               },
               {
                 id: 18,
                 name: 'Wu ZF 2',
-                category: 1
+                category: 2
               },
               {
                 id: 19,
                 name: 'David',
-                category: 1
+                category: 2
               },
               {
                 id: 20,
                 name: 'Davidmouse',
-                category: 1
+                category: 2
               },
               {
                 id: 21,
                 name: 'Martin路德金',
-                category: 1
+                category: 2
               },
               {
                 id: 22,
                 name: 'Autocx David 没票请上车',
-                category: 1
+                category: 2
               },
               {
                 id: 23,
                 name: '陆月雪',
-                category: 1
+                category: 2
               },
               {
                 id: 24,
                 name: 'youyou',
-                category: 1
+                category: 2
               },
               {
                 id: 25,
                 name: '你就是',
-                category: 1
+                category: 2
               },
               {
                 id: 26,
                 name: 'Xu Bochao',
-                category: 1
+                category: 2
               },
               {
                 id: 27,
                 name: '无F可说のOsiris',
-                category: 1
+                category: 2
               },
               {
                 id: 28,
                 name: 'lore derk',
-                category: 1
+                category: 2
               },
               {
                 id: 29,
                 name: '残墨ヾ断诗',
-                category: 1
+                category: 2
               },
               {
                 id: 30,
                 name: '响·硬糖书记（R.T.）',
-                category: 1
+                category: 2
               },
               {
                 id: 31,
                 name: 'Lei.G',
-                category: 1
+                category: 2
               },
               {
                 id: 32,
                 name: 'HawK Golden',
-                category: 1
+                category: 2
               },
               {
                 id: 33,
                 name: '紫露凝香',
-                category: 1
+                category: 2
               },
               {
                 id: 34,
                 name: 'LWGLA',
-                category: 1
+                category: 2
               },
               {
                 id: 35,
                 name: 'James Hsu',
-                category: 1
+                category: 2
               },
               {
                 id: 36,
                 name: 'Lucifer卍666',
-                category: 1
+                category: 2
               },
               {
                 id: 37,
                 name: '阿里妈妈',
-                category: 1
+                category: 2
               },
               {
                 id: 38,
                 name: 'Strafer',
-                category: 1
+                category: 2
               },
               {
                 id: 39,
                 name: 'Choi Chung Wai',
-                category: 1
+                category: 2
               },
               {
                 id: 40,
                 name: '自由不免费',
-                category: 1
+                category: 2
               },
               {
                 id: 41,
                 name: 'Luke',
-                category: 1
+                category: 2
               },
               {
                 id: 42,
                 name: '俺每天都要全身心地与不停冒头的兽性斗争。努力巩固人性基石。在这块土壤上生存，一不留神，就成了助纣为虐',
-                category: 1
+                category: 2
               }
             ],
             links: [
-              {
-                source: 0,
-                target: 6
-              },
-              {
-                source: 1,
-                target: 7
-              },
-              {
-                source: 1,
-                target: 8
-              },
-              {
-                source: 1,
-                target: 9
-              },
-              {
-                source: 1,
-                target: 10
-              },
-              {
-                source: 1,
-                target: 11
-              },
-              {
-                source: 3,
-                target: 12
-              },
-              {
-                source: 3,
-                target: 13
-              },
-              {
-                source: 1,
-                target: 14
-              },
-              {
-                source: 1,
-                target: 15
-              },
-              {
-                source: 3,
-                target: 16
-              },
-              {
-                source: 3,
-                target: 17
-              },
-              {
-                source: 3,
-                target: 18
-              },
-              {
-                source: 3,
-                target: 19
-              },
-              {
-                source: 3,
-                target: 20
-              },
-              {
-                source: 4,
-                target: 21
-              },
-              {
-                source: 0,
-                target: 22
-              },
-              {
-                source: 0,
-                target: 23
-              },
-              {
-                source: 0,
-                target: 24
-              },
-              {
-                source: 0,
-                target: 25
-              },
-              {
-                source: 0,
-                target: 26
-              },
-              {
-                source: 0,
-                target: 27
-              },
-              {
-                source: 0,
-                target: 28
-              },
-              {
-                source: 0,
-                target: 29
-              },
-              {
-                source: 0,
-                target: 30
-              },
-              {
-                source: 0,
-                target: 31
-              },
-              {
-                source: 0,
-                target: 32
-              },
-              {
-                source: 0,
-                target: 33
-              },
-              {
-                source: 0,
-                target: 34
-              },
-              {
-                source: 5,
-                target: 35
-              },
-              {
-                source: 5,
-                target: 36
-              },
-              {
-                source: 5,
-                target: 37
-              },
-              {
-                source: 5,
-                target: 38
-              },
-              {
-                source: 5,
-                target: 40
-              },
               {
                 source: 0,
                 target: 1
@@ -547,73 +418,150 @@ export default {
               },
               {
                 source: 1,
-                target: 2
-              },
-              {
-                source: 1,
-                target: 3
-              },
-              {
-                source: 1,
-                target: 4
-              },
-              {
-                source: 1,
-                target: 5
-              },
-              {
-                source: 1,
-                target: 6
+                target: 7
               },
               {
                 source: 2,
-                target: 3
+                target: 8
               },
               {
                 source: 2,
-                target: 4
+                target: 9
               },
               {
                 source: 2,
-                target: 5
+                target: 10
               },
               {
                 source: 2,
-                target: 6
+                target: 11
               },
               {
-                source: 3,
-                target: 4
-              },
-              {
-                source: 3,
-                target: 5
-              },
-              {
-                source: 3,
-                target: 6
+                source: 2,
+                target: 12
               },
               {
                 source: 4,
-                target: 5
+                target: 13
               },
               {
                 source: 4,
-                target: 6
+                target: 14
+              },
+              {
+                source: 2,
+                target: 15
+              },
+              {
+                source: 2,
+                target: 16
+              },
+              {
+                source: 4,
+                target: 17
+              },
+              {
+                source: 4,
+                target: 18
+              },
+              {
+                source: 4,
+                target: 19
+              },
+              {
+                source: 4,
+                target: 20
+              },
+              {
+                source: 4,
+                target: 21
               },
               {
                 source: 5,
-                target: 6
-              }
-            ],
-            categories: [
-              {
-                name: '关键参与者'
+                target: 22
               },
               {
-                name: '一般用户'
+                source: 1,
+                target: 23
+              },
+              {
+                source: 1,
+                target: 24
+              },
+              {
+                source: 1,
+                target: 25
+              },
+              {
+                source: 1,
+                target: 26
+              },
+              {
+                source: 1,
+                target: 27
+              },
+              {
+                source: 1,
+                target: 28
+              },
+              {
+                source: 1,
+                target: 29
+              },
+              {
+                source: 1,
+                target: 30
+              },
+              {
+                source: 1,
+                target: 31
+              },
+              {
+                source: 1,
+                target: 32
+              },
+              {
+                source: 1,
+                target: 33
+              },
+              {
+                source: 1,
+                target: 34
+              },
+              {
+                source: 1,
+                target: 35
+              },
+              {
+                source: 6,
+                target: 36
+              },
+              {
+                source: 6,
+                target: 37
+              },
+              {
+                source: 6,
+                target: 38
+              },
+              {
+                source: 6,
+                target: 39
+              },
+              {
+                source: 6,
+                target: 41
               }
             ],
+            categories: [{
+              name: '议题'
+            },
+            {
+              name: '关键参与者'
+            },
+            {
+              name: '一般用户'
+            }],
             roam: true,
             focusNodeAdjacency: true,
             itemStyle: {
@@ -636,46 +584,15 @@ export default {
         ]
       },
       user_info: {
-        avatar: require('../../assets/imgs/thNH3H58_400x400.jpg'),
-        name: '黄之锋',
-        age: '23',
-        gender: '男',
-        location: '香港',
-        tags: ['政治', '经济'],
-        hot_posts: [
-          {
-            activity: '香港“反送中”抗议期间，记者与警察的关系每况愈下。记者多次指控在示威现场遭遇警员辱骂和暴力对待，而警察则指记者常常逗留在示威者与警察中间，阻碍他们执行公务。',
-            time: '2020/5/28 7:01'
-          },
-          {
-            activity: '香港“反送中”抗议持续一年后，台湾陆委会日前宣布新的香港援助方案，将设立台港服务交流办公室，为来台湾的港人， 包括寻求庇护反政府示威者提供服务。台湾对港人有哪些援助措施？未来台湾能成为香港示威者的庇护所吗？',
-            time: '2020/6/26 10:01'
-          },
-          {
-            activity: '香港民众反对《逃犯条例》修订案的“反送中”示威满一年，有民意调查显示，香港新闻自由评分再创新低，受访公众与新闻从业员均认为前线记者遭遇暴力袭击问题严重。',
-            time: '2020/7/16 13:31'
-          },
-          {
-            activity: '周小龙今年6月在店内摆放民主女神像引起关注。他曾被归类为开明建制派，2014年批评香港“占领中环”运动，责怪示威者阻碍他做生意。但时隔5年，“反送中”运动令周小龙觉得中国和香港政府不听从民意，无视警察暴力事件，香港距离民主自由越来越远，他不得不越走越前。',
-            time: '2020/8/6 11:01'
-          },
-          {
-            activity: '香港爆发反送中运动时，《花木兰》的主角刘亦菲因声援香港警方，引发中国大陆以外的网民抵制。如今这部迪士尼重头戏经历一波三折后，获安排在其网上串流平台上播放。',
-            time: '2020/8/6 20:00'
-          },
-          {
-            activity: '香港“反送中”运动爆发至今超过一年，超过九千人被捕，部分人选择流亡，也有人坚持留下。BBC旗舰新闻节目《Newsnight》访问了他们。',
-            time: '2020/8/14 20:00'
-          },
-          {
-            activity: '香港“反送中”运动爆发至今超过一年，最近生效的香港《国安法》令民主派支持者对于香港的前途更加担忧。一些人选择远走他方，但还有一些示威者决定留守家园，他们将何去何从？',
-            time: '2020/8/16 20:00'
-          },
-          {
-            activity: '15岁女学生陈彦霖之死成为香港“反送中”示威的一大争论焦点，11天的死因研讯最终未能解开多个谜团。',
-            time: '2020/9/11 19:30'
-          }
-        ]
+        avatar: require('../../assets/imgs/tiacF_Yg_200x200.jpg'),
+        name: 'BBC News 中文',
+        following: '231',
+        follower: '2,092,243',
+        repost_time: '2020-07-21 14:01:09',
+        repost_count: 48,
+        repost_content: '一年前的7月21日，香港新界元朗晚间爆发冲突。一批身着白衣、戴口罩的人士用棍棒追打市民。中午至傍晚时份，则有示威者游行到中联办，向中国国徽投掷鸡蛋及油漆弹。其后在上环爆发警民冲突，警方共发射55枚催泪烟及催泪弹、5发橡胶子弹及24枚海绵弹驱散示威者。',
+        selected: 2,
+        post_line: ['反送中', 'BBC News 中文', 'youyou']
       },
       altitude_graph_option: {
         grid: {
@@ -772,44 +689,38 @@ export default {
 </script>
 
 <style scoped lang="sass">
-.user-container
-  padding: 32px
-  background-color: rgb(240, 242, 245)
-  position: relative
-  min-height: 918px
+  .topic-container
+    padding: 32px
+    background-color: rgb(240, 242, 245)
+    position: relative
+    min-height: 918px
 
-.box-card
-  margin-bottom: 25px
+  .box-card
+    margin-bottom: 25px
 
-.info_list
-  margin: 10px
+  .info_list
+    margin: 10px
 
-  .info
-    margin: 5px 0
+    .info
+      margin: 5px 0
 
-    .tag_item
-      margin-right: 5px
+      .tag_item
+        margin-right: 5px
 
-.timeline_list
-  height: 230px
-  overflow-y: scroll
+  .post_line
+    padding: 100px 20px
+    height: 240px
 
-.timeline_list::-webkit-scrollbar
-  width : 10px
-  height: 1px
+  .repost_content
+    max-height: 160px
+    display: -webkit-box
+    -webkit-line-clamp: 9
+    -webkit-box-orient: vertical
+    overflow: hidden
 
-.timeline_list::-webkit-scrollbar-thumb
-  border-radius: 10px
-  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2)
-  background   : rgba(83, 83, 83, 0.5)
-
-.timeline_list::-webkit-scrollbar-track
-  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2)
-  border-radius: 10px
-  background   : #ededed
-
-.relation_line
-  margin: 17px 0
-  font-size: 18px
-  vertical-align: center
+  .relation_line
+    margin: 17px 0
+    font-size: 18px
+    vertical-align: center
 </style>
+
