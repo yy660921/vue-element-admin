@@ -9,13 +9,24 @@
             </div>
             <div class="container">
               <div class="topic-list">
-                <div v-for="topic in related_topic" :key="topic.id" class="topic-item">
+                <div v-for="topic in Object.keys(page_data)" :key="topic" class="topic-item">
+                  <div class="topic-lable">
+                    <span>{{ page_data[topic].topic_type }}</span>
+                  </div>
                   <div class="topic-title">
-                    <span>{{ topic.id + '.' }}</span>
-                    <span>{{ topic.content }}</span>
+                    <span>{{ topic }}</span>
+                  </div>
+                  <div class="topic-content">
+                    <span>{{ page_data[topic].topic }}</span>
+                  </div>
+                  <div class="topic-tags">
+                    <el-tag v-for="keyword in page_data[topic].keywords" :key="keyword" :hint="true" class="tag_item">{{ keyword }}</el-tag>
                   </div>
                   <div class="topic-hot">
-                    <el-tag type="danger">{{ topic.hot }}</el-tag>
+                    {{ page_data[topic].sensitive }}
+                  </div>
+                  <div class="topic-hot">
+                    <el-tag type="danger">{{ page_data[topic].hot }}</el-tag>
                   </div>
                 </div>
               </div>
@@ -29,21 +40,15 @@
                 <span>意见领袖发帖</span>
               </div>
               <el-row :gutter="8">
-                <el-col v-for="option in leader_opinions" :key="option.id" :md="12" :lg="12" class="option_item">
-                  <el-row :gutter="8">
-                    <el-col :md="8" :lg="8">
-                      <el-image
-                        style="width: 100%"
-                        :src="option.avatar"
-                        fit="contain"
-                      />
-                    </el-col>
-                    <el-col :md="16" :lg="16">
-                      <div class="option_name">{{ option.name }}</div>
-                      <div class="option_content" :title="option.content">{{ option.content }}</div>
-                    </el-col>
-                  </el-row>
-                </el-col>
+                <el-timeline>
+                  <el-timeline-item
+                    v-for="post in page_data[selected_topic].user_post"
+                    :key="post.url"
+                    :timestamp="post.time"
+                  >
+                    {{ post.content }}
+                  </el-timeline-item>
+                </el-timeline>
               </el-row>
             </el-card>
           </el-row>
@@ -54,7 +59,7 @@
               </div>
               <word-cloud-chart
                 id="topicCloud"
-                :data="word"
+                :data="page_data[selected_topic].user_keywords"
                 height="200px"
               />
             </el-card>
@@ -72,6 +77,8 @@ export default {
   components: { WordCloudChart },
   data() {
     return {
+      page_data: require('../../data/user_topic.json'),
+      selected_topic: '',
       percentage: 57,
       related_topic: [
         {
@@ -250,6 +257,9 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    this.selected_topic = Object.keys(this.page_data)[0]
   }
 }
 </script>

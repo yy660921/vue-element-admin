@@ -83,7 +83,7 @@
             </div>
             <el-row :gutter="32">
               <el-col :md="24" :lg="24">
-                <pie-chart :option="altitude_pie_chart_option" height="310px" />
+                <mix-chart :option="altitude_bar_chart_option" height="310px" />
               </el-col>
             </el-row>
           </el-card>
@@ -153,9 +153,10 @@
 
 <script>
 import PieChart from '../dashboard/admin/components/PieChart'
+import MixChart from '../../components/Charts/MixChart'
 export default {
   name: 'Base',
-  components: { PieChart },
+  components: { PieChart, MixChart },
   data() {
     return {
       topic_info: {
@@ -171,30 +172,19 @@ export default {
         spread_speed: '124/ 日',
         continuous_time: '1.5 年'
       },
-      altitude_pie_chart_option: {
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+      altitude_bar_chart_option: {
+        xAxis: {
+          type: 'value'
         },
-        legend: {
-          left: 'center',
-          bottom: '10',
-          data: ['支持', '中立', '反对']
+        yAxis: {
+          type: 'category',
+          reverse: true,
+          data: ['反对', '中立', '支持']
         },
-        series: [
-          {
-            name: '立场分布',
-            type: 'pie',
-            radius: [15, 95],
-            center: ['50%', '38%'],
-            data: [
-              { value: 300, name: '支持' },
-              { value: 100, name: '中立' },
-              { value: 600, name: '反对' }
-            ],
-            animationDuration: 2600
-          }
-        ]
+        series: [{
+          data: [600, 100, 400],
+          type: 'bar'
+        }]
       },
       platform_pie_chart_option: {
         tooltip: {

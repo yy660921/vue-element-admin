@@ -9,62 +9,70 @@
             </div>
             <el-row :gutter="32">
               <el-col :md="4" :lg="4">
-                <el-image
-                  :src="user_info.avatar"
-                  fit="contain"
-                />
+                <div class="info_list">
+                  <el-image
+                    :src="user_info.avatar"
+                    fit="contain"
+                  />
+                </div>
               </el-col>
               <el-col :md="4" :lg="4">
-                <div>
-                  <div class="info_list">
-                    <div class="info">
-                      <h1>{{ user_info.name }}</h1>
-                    </div>
-                    <div class="info">
-                      <el-row gutter="8" class="info">
-                        <el-col :md="8" :lg="8">
-                          <span>年龄</span>
-                        </el-col>
-                        <el-col :md="16" :lg="16">
-                          <span>{{ user_info.age }}</span>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="info">
-                      <el-row gutter="8" class="info">
-                        <el-col :md="8" :lg="8">
-                          <span>性别</span>
-                        </el-col>
-                        <el-col :md="16" :lg="16">
-                          <span>{{ user_info.gender }}</span>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="info">
-                      <el-row gutter="8" class="info">
-                        <el-col :md="8" :lg="8">
-                          <span>地点</span>
-                        </el-col>
-                        <el-col :md="16" :lg="16">
-                          <span>{{ user_info.location }}</span>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="info">
-                      <el-row gutter="8" class="info">
-                        <el-col :md="8" :lg="8">
-                          <span>关注内容</span>
-                        </el-col>
-                        <el-col :md="16" :lg="16">
-                          <el-tag v-for="tag in user_info.tags" :key="tag" :hint="true" class="tag_item">{{ tag }}</el-tag>
-                        </el-col>
-                      </el-row>
-                    </div>
+                <div class="info_list">
+                  <div class="info">
+                    <h1>{{ user_info.name }}</h1>
+                  </div>
+                  <div class="info">
+                    <el-row :gutter="8" class="info">
+                      <el-col :md="8" :lg="8">
+                        <span>年龄</span>
+                      </el-col>
+                      <el-col :md="16" :lg="16">
+                        <span>{{ user_info.age }}</span>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="info">
+                    <el-row :gutter="8" class="info">
+                      <el-col :md="8" :lg="8">
+                        <span>性别</span>
+                      </el-col>
+                      <el-col :md="16" :lg="16">
+                        <span>{{ user_info.gender }}</span>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="info">
+                    <el-row :gutter="8" class="info">
+                      <el-col :md="8" :lg="8">
+                        <span>地点</span>
+                      </el-col>
+                      <el-col :md="16" :lg="16">
+                        <span>{{ user_info.location }}</span>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="info">
+                    <el-row :gutter="8" class="info">
+                      <el-col :md="8" :lg="8">
+                        <span>主页</span>
+                      </el-col>
+                      <el-col :md="16" :lg="16">
+                        <i class="el-icon-link" /><el-link>Twitter</el-link>
+                        <i class="el-icon-link" /><el-link>Facebook</el-link>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="info">
+                    <el-row :gutter="8" class="info">
+                      <el-col :md="24" :lg="24">
+                        <el-tag v-for="tag in user_info.tags" :key="tag" :hint="true" class="tag_item">{{ tag }}</el-tag>
+                      </el-col>
+                    </el-row>
                   </div>
                 </div>
               </el-col>
               <el-col :md="8" :lg="8">
-                <el-row gutter="8">
+                <el-row :gutter="8">
                   <div class="info_list">
                     <el-col :md="12" :lg="12">
                       <div class="index">
@@ -92,7 +100,7 @@
                 </el-row>
               </el-col>
               <el-col :md="8" :lg="8">
-                <el-row gutter="8">
+                <el-row :gutter="8">
                   <div class="info_list">
                     <el-col :md="24" :lg="24">
                       <div class="index">
@@ -208,7 +216,10 @@ export default {
         age: '23',
         gender: '男',
         location: '香港',
-        tags: ['政治', '经济'],
+        tags: ['政治', '黑紫荆', '国安法', '反修例'],
+        description: 'Hong Kong activist〡Formerly Demosistō〡#save12hkyouths',
+        twitter_link: '',
+        facebook_link: '',
         followed: 727569,
         followed_trend: 80,
         focus: 9877,
@@ -272,7 +283,6 @@ export default {
   margin-bottom: 25px
 
 .info_list
-  margin: 10px
 
   .info
     margin: 12px 0

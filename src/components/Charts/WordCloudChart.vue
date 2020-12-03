@@ -32,6 +32,10 @@ export default {
         return []
       }
     },
+    rotation: {
+      type: Number,
+      default: 0
+    },
     title: {
       type: String,
       default: ''
@@ -66,7 +70,7 @@ export default {
             type: 'wordCloud',
             gridSize: 10,
             sizeRange: [14, 60],
-            rotationRange: [0, 0],
+            rotationRange: [0, this.rotation],
             textStyle: {
               normal: {
                 color: function() {

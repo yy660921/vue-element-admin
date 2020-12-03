@@ -82,12 +82,12 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/overview',
+    path: '/overview/user',
     component: Layout,
     redirect: '/dashboard',
     children: [
       {
-        path: 'user',
+        path: '',
         component: () => import('@/views/overview/user'),
         name: '用户概览',
         meta: { title: '用户概览', icon: 'peoples', affix: true }
@@ -96,12 +96,12 @@ export const constantRoutes = [
   },
   userRouter,
   {
-    path: '/overview',
+    path: '/overview/topic',
     component: Layout,
     redirect: '/dashboard',
     children: [
       {
-        path: 'dashboard',
+        path: '',
         component: () => import('@/views/overview/topic'),
         name: '议题概览',
         meta: { title: '议题概览', icon: 'message', affix: true }
@@ -110,12 +110,12 @@ export const constantRoutes = [
   },
   topicRouter,
   {
-    path: '/overview',
+    path: '/overview/strategy',
     component: Layout,
     redirect: '/dashboard',
     children: [
       {
-        path: 'strategy',
+        path: '',
         component: () => import('@/views/overview/strategy'),
         name: '策略库',
         meta: { title: '策略库', icon: 'form', affix: true }

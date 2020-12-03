@@ -73,19 +73,19 @@
             </el-col>
             <el-col :md="10" :lg="10">
               <el-row :gutter="8">
-                <el-col :span="6">
-                  转发内容
-                </el-col>
-                <el-col :span="18" class="repost_content" :title="user_info.repost_content">
-                  {{ user_info.repost_content }}
-                </el-col>
+                <!--                <el-col :span="6">-->
+                <!--                  转发内容-->
+                <!--                </el-col>-->
+                <!--                <el-col :span="18" class="repost_content" :title="user_info.repost_content">-->
+                <!--                  {{ user_info.repost_content }}-->
+                <!--                </el-col>-->
               </el-row>
             </el-col>
           </el-row>
           <el-divider />
           <el-row class="post_line">
             <el-steps :active="user_info.selected">
-              <el-step v-for="user in user_info.post_line" :key="user" :title="user" />
+              <el-step v-for="user in user_info.post_line" :key="user.name" :title="user.name" :description="user.content" />
             </el-steps>
           </el-row>
         </el-card>
@@ -590,9 +590,18 @@ export default {
         follower: '2,092,243',
         repost_time: '2020-07-21 14:01:09',
         repost_count: 48,
-        repost_content: '一年前的7月21日，香港新界元朗晚间爆发冲突。一批身着白衣、戴口罩的人士用棍棒追打市民。中午至傍晚时份，则有示威者游行到中联办，向中国国徽投掷鸡蛋及油漆弹。其后在上环爆发警民冲突，警方共发射55枚催泪烟及催泪弹、5发橡胶子弹及24枚海绵弹驱散示威者。',
+        repost_content: '香港“反送中”抗议期间，记者与警察的关系每况愈下。记者多次指控在示威现场遭遇警员辱骂和暴力对待，而警察则指记者常常逗留在示威者与警察中间，阻碍他们执行公务。',
         selected: 2,
-        post_line: ['反送中', 'BBC News 中文', 'youyou']
+        post_line: [{
+          name: '反送中',
+          content: '是指香港自2019年3月31日开始、6月9日大规模爆发的社会运动,向香港特别行政区政府抗议其提出《逃犯条例》修订草案.'
+        }, {
+          name: 'BBC News 中文',
+          content: '香港“反送中”抗议期间，记者与警察的关系每况愈下。记者多次指控在示威现场遭遇警员辱骂和暴力对待，而警察则指记者常常逗留在示威者与警察中间，阻碍他们执行公务。'
+        }, {
+          name: 'youyou',
+          content: 'Replying to @bbcchinese多个是几个?41'
+        }]
       },
       altitude_graph_option: {
         grid: {
@@ -708,7 +717,7 @@ export default {
         margin-right: 5px
 
   .post_line
-    padding: 100px 20px
+    padding: 20px
     height: 240px
 
   .repost_content

@@ -1,6 +1,6 @@
 <template>
   <div class="topic-container">
-    <el-row gutter="32">
+    <el-row :gutter="32">
       <el-col :span="24">
         <el-card>
           <div slot="header">
@@ -68,7 +68,7 @@
               <el-table-column
                 prop="nickname"
                 label="昵称"
-                width="150"
+                width="180"
               />
               <el-table-column
                 prop="platform"
@@ -103,7 +103,7 @@
               <el-table-column
                 prop="operation"
                 label="具体操作"
-                width="550"
+                width="500"
               />
               <el-table-column
                 prop="cost"

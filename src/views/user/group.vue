@@ -16,7 +16,7 @@
       <el-col :md="12" :lg="12">
         <el-card class="box-card">
           <div slot="header">
-            <span>用户相关议题</span>
+            <span>用户概要</span>
           </div>
           <el-row :gutter="32">
             <el-col :md="6" :lg="6">
@@ -161,449 +161,504 @@ export default {
             layout: 'force',
             data: [
               {
-                id: 2,
                 name: 'BBC News 中文',
                 category: 0,
+                value: 20,
                 label: {
                   show: true
                 }
               },
               {
-                id: 3,
                 name: '纽约时报中文网',
                 category: 0,
+                value: 20,
                 label: {
                   show: true
                 }
               },
               {
-                id: 4,
                 name: '吳文遠 Avery Ng',
                 category: 0,
+                value: 20,
                 label: {
                   show: true
                 }
               },
               {
-                id: 5,
                 name: 'ABC中文',
                 category: 0,
+                value: 20,
                 label: {
                   show: true
                 }
               },
               {
-                id: 6,
                 name: 'poon siu to潘小濤',
                 category: 0,
+                value: 20,
                 label: {
                   show: true
                 }
               },
               {
-                id: 7,
                 name: 'Wong Ji Yuet 黃子悅',
                 category: 0,
+                value: 20,
                 label: {
                   show: true
                 }
               },
               {
-                id: 8,
                 name: 'Jason Chen',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 9,
                 name: '成忠',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 10,
                 name: 'kevin shen',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 11,
                 name: 'Houseless M.D.',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 12,
                 name: 'Kaka_hk',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 13,
                 name: 'Daniel Zhang',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 14,
                 name: 'Sheldon C.',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 15,
                 name: 'benleebenbenlee',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 16,
                 name: '人革联',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 17,
                 name: 'Qianyi Zhou',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 18,
                 name: 'Wu ZF 2',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 19,
                 name: 'David',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 20,
                 name: 'Davidmouse',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 21,
                 name: 'Martin路德金',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 22,
                 name: 'Autocx David 没票请上车',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 23,
                 name: '陆月雪',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 24,
                 name: 'youyou',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 25,
                 name: '你就是',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 26,
                 name: 'Xu Bochao',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 27,
                 name: '无F可说のOsiris',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 28,
                 name: 'lore derk',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 29,
                 name: '残墨ヾ断诗',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 30,
                 name: '响·硬糖书记（R.T.）',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 31,
                 name: 'Lei.G',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 32,
                 name: 'HawK Golden',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 33,
                 name: '紫露凝香',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 34,
                 name: 'LWGLA',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 35,
                 name: 'James Hsu',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 36,
                 name: 'Lucifer卍666',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 37,
                 name: '阿里妈妈',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 38,
                 name: 'Strafer',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 39,
                 name: 'Choi Chung Wai',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 40,
                 name: '自由不免费',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 41,
                 name: 'Luke',
-                category: 1
+                category: 1,
+                value: 20
               },
               {
-                id: 42,
                 name: '俺每天都要全身心地与不停冒头的兽性斗争。努力巩固人性基石。在这块土壤上生存，一不留神，就成了助纣为虐',
-                category: 1
+                category: 1,
+                value: 20
               }
             ],
             links: [
               {
-                source: 0,
-                target: 6
+                source: 'BBC News 中文',
+                target: 'Jason Chen',
+                value: 20
               },
               {
-                source: 1,
-                target: 7
+                source: '纽约时报中文网',
+                target: '成忠',
+                value: 20
               },
               {
-                source: 1,
-                target: 8
+                source: '纽约时报中文网',
+                target: 'kevin shen',
+                value: 20
               },
               {
-                source: 1,
-                target: 9
+                source: '纽约时报中文网',
+                target: 'Houseless M.D.',
+                value: 20
               },
               {
-                source: 1,
-                target: 10
+                source: '纽约时报中文网',
+                target: 'Kaka_hk',
+                value: 20
               },
               {
-                source: 1,
-                target: 11
+                source: '纽约时报中文网',
+                target: 'Daniel Zhang',
+                value: 20
               },
               {
-                source: 3,
-                target: 12
+                source: 'ABC中文',
+                target: 'Sheldon C.',
+                value: 20
               },
               {
-                source: 3,
-                target: 13
+                source: 'ABC中文',
+                target: 'benleebenbenlee',
+                value: 20
               },
               {
-                source: 1,
-                target: 14
+                source: '纽约时报中文网',
+                target: '人革联',
+                value: 20
               },
               {
-                source: 1,
-                target: 15
+                source: '纽约时报中文网',
+                target: 'Qianyi Zhou',
+                value: 20
               },
               {
-                source: 3,
-                target: 16
+                source: 'ABC中文',
+                target: 'Wu ZF 2',
+                value: 20
               },
               {
-                source: 3,
-                target: 17
+                source: 'ABC中文',
+                target: 'David',
+                value: 20
               },
               {
-                source: 3,
-                target: 18
+                source: 'ABC中文',
+                target: 'Davidmouse',
+                value: 20
               },
               {
-                source: 3,
-                target: 19
+                source: 'ABC中文',
+                target: 'Martin路德金',
+                value: 20
               },
               {
-                source: 3,
-                target: 20
+                source: 'ABC中文',
+                target: 'Autocx David 没票请上车',
+                value: 20
               },
               {
-                source: 4,
-                target: 21
+                source: 'poon siu to潘小濤',
+                target: '陆月雪',
+                value: 20
               },
               {
-                source: 0,
-                target: 22
+                source: 'BBC News 中文',
+                target: 'youyou',
+                value: 20
               },
               {
-                source: 0,
-                target: 23
+                source: 'BBC News 中文',
+                target: '你就是',
+                value: 20
               },
               {
-                source: 0,
-                target: 24
+                source: 'BBC News 中文',
+                target: 'Xu Bochao',
+                value: 20
               },
               {
-                source: 0,
-                target: 25
+                source: 'BBC News 中文',
+                target: '无F可说のOsiris',
+                value: 20
               },
               {
-                source: 0,
-                target: 26
+                source: 'BBC News 中文',
+                target: 'lore derk',
+                value: 20
               },
               {
-                source: 0,
-                target: 27
+                source: 'BBC News 中文',
+                target: '残墨ヾ断诗',
+                value: 20
               },
               {
-                source: 0,
-                target: 28
+                source: 'BBC News 中文',
+                target: '响·硬糖书记（R.T.）',
+                value: 20
               },
               {
-                source: 0,
-                target: 29
+                source: 'BBC News 中文',
+                target: 'Lei.G',
+                value: 20
               },
               {
-                source: 0,
-                target: 30
+                source: 'BBC News 中文',
+                target: 'HawK Golden',
+                value: 20
               },
               {
-                source: 0,
-                target: 31
+                source: 'BBC News 中文',
+                target: '紫露凝香',
+                value: 20
               },
               {
-                source: 0,
-                target: 32
+                source: 'BBC News 中文',
+                target: 'LWGLA',
+                value: 20
               },
               {
-                source: 0,
-                target: 33
+                source: 'BBC News 中文',
+                target: 'James Hsu',
+                value: 20
               },
               {
-                source: 0,
-                target: 34
+                source: 'BBC News 中文',
+                target: 'Lucifer卍666',
+                value: 20
               },
               {
-                source: 5,
-                target: 35
+                source: 'Wong Ji Yuet 黃子悅',
+                target: '阿里妈妈',
+                value: 20
               },
               {
-                source: 5,
-                target: 36
+                source: 'Wong Ji Yuet 黃子悅',
+                target: 'Strafer',
+                value: 20
               },
               {
-                source: 5,
-                target: 37
+                source: 'Wong Ji Yuet 黃子悅',
+                target: 'Choi Chung Wai',
+                value: 20
               },
               {
-                source: 5,
-                target: 38
+                source: 'Wong Ji Yuet 黃子悅',
+                target: '自由不免费',
+                value: 20
               },
               {
-                source: 5,
-                target: 40
+                source: 'Wong Ji Yuet 黃子悅',
+                target: 'Luke',
+                value: 20
               },
               {
-                source: 0,
-                target: 1
+                source: 'BBC News 中文',
+                target: '纽约时报中文网',
+                value: 20
               },
               {
-                source: 0,
-                target: 2
+                source: 'BBC News 中文',
+                target: '吳文遠 Avery Ng',
+                value: 20
               },
               {
-                source: 0,
-                target: 3
+                source: 'BBC News 中文',
+                target: 'ABC中文',
+                value: 20
               },
               {
-                source: 0,
-                target: 4
+                source: 'BBC News 中文',
+                target: 'poon siu to潘小濤',
+                value: 20
               },
               {
-                source: 0,
-                target: 5
+                source: 'BBC News 中文',
+                target: 'Wong Ji Yuet 黃子悅',
+                value: 20
               },
               {
-                source: 0,
-                target: 6
+                source: 'BBC News 中文',
+                target: 'Jason Chen',
+                value: 20
               },
               {
-                source: 1,
-                target: 2
+                source: '纽约时报中文网',
+                target: '吳文遠 Avery Ng',
+                value: 20
               },
               {
-                source: 1,
-                target: 3
+                source: '纽约时报中文网',
+                target: 'ABC中文',
+                value: 20
               },
               {
-                source: 1,
-                target: 4
+                source: '纽约时报中文网',
+                target: 'poon siu to潘小濤',
+                value: 20
               },
               {
-                source: 1,
-                target: 5
+                source: '纽约时报中文网',
+                target: 'Wong Ji Yuet 黃子悅',
+                value: 20
               },
               {
-                source: 1,
-                target: 6
+                source: '纽约时报中文网',
+                target: 'Jason Chen',
+                value: 20
               },
               {
-                source: 2,
-                target: 3
+                source: '吳文遠 Avery Ng',
+                target: 'ABC中文',
+                value: 20
               },
               {
-                source: 2,
-                target: 4
+                source: '吳文遠 Avery Ng',
+                target: 'poon siu to潘小濤',
+                value: 20
               },
               {
-                source: 2,
-                target: 5
+                source: '吳文遠 Avery Ng',
+                target: 'Wong Ji Yuet 黃子悅',
+                value: 20
               },
               {
-                source: 2,
-                target: 6
+                source: '吳文遠 Avery Ng',
+                target: 'Jason Chen',
+                value: 20
               },
               {
-                source: 3,
-                target: 4
+                source: 'ABC中文',
+                target: 'poon siu to潘小濤',
+                value: 20
               },
               {
-                source: 3,
-                target: 5
+                source: 'ABC中文',
+                target: 'Wong Ji Yuet 黃子悅',
+                value: 20
               },
               {
-                source: 3,
-                target: 6
+                source: 'ABC中文',
+                target: 'Jason Chen',
+                value: 20
               },
               {
-                source: 4,
-                target: 5
+                source: 'poon siu to潘小濤',
+                target: 'Wong Ji Yuet 黃子悅',
+                value: 20
               },
               {
-                source: 4,
-                target: 6
+                source: 'poon siu to潘小濤',
+                target: 'Jason Chen',
+                value: 20
               },
               {
-                source: 5,
-                target: 6
+                source: 'Wong Ji Yuet 黃子悅',
+                target: 'Jason Chen',
+                value: 20
               }
             ],
             categories: [
@@ -792,6 +847,7 @@ export default {
 
 .timeline_list
   height: 230px
+  padding: 5px 0
   overflow-y: scroll
 
 .timeline_list::-webkit-scrollbar

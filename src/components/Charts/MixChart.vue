@@ -27,27 +27,34 @@ export default {
       default: '300px'
     },
     option: {
-      type: Object,
-      default: () => {
-        return {
-          xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [{
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line'
-          }]
-        }
-      }
+      type: String,
+      default: JSON.stringify({
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }]
+      })
     }
   },
   data() {
     return {
       chart: null
+    }
+  },
+  watch: {
+    option: {
+      handler: function(option) {
+        const that = this
+        that.instance.setOption(option, that.notMerge, that.lazyUpdate)
+      },
+      deep: true
     }
   },
   mounted() {
