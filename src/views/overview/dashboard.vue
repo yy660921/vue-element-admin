@@ -26,7 +26,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="关键词">
-              <el-input v-model="searchForm.keywords" :style="styles.input_style.width" placeholder="请输入检索关键词" />
+              <el-input v-model="searchForm.keywords" :style="styles.input_style" placeholder="请输入检索关键词" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">查  询</el-button>
@@ -59,7 +59,7 @@
 <script>
 import Echarts from 'vue-echarts/components/ECharts'
 require('echarts/theme/macarons') // echarts theme
-import { getHierarchicalDiagram, getSuggestTopic, getSuggestUser } from '../../api/home'
+import { getHierarchicalDiagram, getSuggestTopic, getSuggestUser } from '../../api/overview/home'
 
 export default {
   name: 'Dashboard',
@@ -145,10 +145,6 @@ export default {
     window.addEventListener('resize', this.getHeight)
     this.getHeight()
   },
-  mounted() {
-    this.getHierarchicalDiagram(this.topic, 'topic')
-    this.getSuggest()
-  },
   methods: {
     getHierarchicalDiagram(center, type) {
       getHierarchicalDiagram(center, type).then(response => {
@@ -181,8 +177,9 @@ export default {
       this.styles.graph_style.height = (window.innerHeight - 50 - 32 - 1 - 55 - 20 - 20 - 1 - 32) + 'px'
       this.styles.user_style.height = ((window.innerHeight - 50 - 32 - 1 - 55 - 20 - 116 - 20 - 1 - 32) / 2 - 50 - 25) + 'px'
       this.styles.topic_style.height = ((window.innerHeight - 50 - 32 - 1 - 55 - 20 - 116 - 20 - 1 - 32) / 2 - 50 - 25) + 'px'
-      this.styles.input_style.width = (window.innerWidth - 210 - 32) / 4 - 32 - 2 - 40 - 60 - 10 - 84 + 'px'
-      console.log(this.styles.input_style.width)
+      this.styles.input_style.width = (window.innerWidth - 210 - 32) / 4 - 32 - 2 - 40 - 74 - 60 - 30 + 'px'
+      this.getHierarchicalDiagram(this.topic, 'topic')
+      this.getSuggest()
     }
   }
 }

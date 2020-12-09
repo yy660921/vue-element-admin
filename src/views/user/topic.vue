@@ -3,30 +3,50 @@
     <div class="user-container">
       <el-row :gutter="32">
         <el-col :md="12" :lg="12">
-          <el-card class="box-card">
+          <el-card>
             <div slot="header">
               <span>相关议题</span>
             </div>
-            <div class="container">
+            <div class="container" :style="styles.topic_container">
               <div class="topic-list">
-                <div v-for="topic in Object.keys(page_data)" :key="topic" class="topic-item">
-                  <div class="topic-lable">
-                    <span>{{ page_data[topic].topic_type }}</span>
-                  </div>
-                  <div class="topic-title">
-                    <span>{{ topic }}</span>
-                  </div>
+                <div v-for="(topic, index) in related_topic" :key="index" class="topic-item">
+                  <h3 class="topic-titleline">
+                    <span class="topic-index">{{ index + 1 }}</span>
+                    <span class="topic-type">{{ topic.type }}</span>
+                    <span class="topic-title" @click="getTopicInfo(topic.name)">{{ topic.name }}</span>
+                  </h3>
                   <div class="topic-content">
-                    <span>{{ page_data[topic].topic }}</span>
+                    <span :title="topic.introduction">{{ topic.introduction }}</span>
                   </div>
-                  <div class="topic-tags">
-                    <el-tag v-for="keyword in page_data[topic].keywords" :key="keyword" :hint="true" class="tag_item">{{ keyword }}</el-tag>
+                  <div class="topic-attrs">
+                    <div class="topic-attr" :style="styles.keywords">
+                      <label>关键词：</label>
+                      <span>{{ topic.keywords.join("，") }}</span>
+                    </div>
+                    <div class="topic-attr" :style="styles.participate">
+                      <label>参与度：</label>
+                      <span>{{ topic.participate }}</span>
+                    </div>
+                    <div class="topic-attr" :style="styles.heat">
+                      <label>热度：</label>
+                      <div class="topic-heat-bar" :style="styles.heatbar">
+                        <el-progress
+                          :percentage="topic.totalHeat/ max_heat * 100"
+                          :format="format"
+                          :stroke-width="14"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="topic-hot">
-                    {{ page_data[topic].sensitive }}
-                  </div>
-                  <div class="topic-hot">
-                    <el-tag type="danger">{{ page_data[topic].hot }}</el-tag>
+                  <div class="topic-attrs">
+                    <span class="topic-attr" :style="styles.startTime">
+                      <label>开始时间：</label>
+                      <span>{{ topic.startTime }}</span>
+                    </span>
+                    <span class="topic-attr" :style="styles.sensitive">
+                      <label>敏感度：</label>
+                      <span>{{ topic.sensitive }}</span>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -39,29 +59,29 @@
               <div slot="header">
                 <span>意见领袖发帖</span>
               </div>
-              <el-row :gutter="8">
-                <el-timeline>
-                  <el-timeline-item
-                    v-for="post in page_data[selected_topic].user_post"
-                    :key="post.url"
-                    :timestamp="post.time"
-                  >
-                    {{ post.content }}
-                  </el-timeline-item>
-                </el-timeline>
-              </el-row>
+              <div class="container user-view-container" :style="styles.user_view">
+                <el-row :gutter="8">
+                  <el-timeline>
+                    <el-timeline-item
+                      v-for="post in leader_opinions"
+                      :key="post.url"
+                      :timestamp="post.time"
+                    >
+                      {{ post.content }}
+                    </el-timeline-item>
+                  </el-timeline>
+                </el-row>
+              </div>
             </el-card>
           </el-row>
-          <el-row :gutter="8">
+          <el-row :gutter="16">
             <el-card>
               <div slot="header">
                 <span>关键词云</span>
               </div>
-              <word-cloud-chart
-                id="topicCloud"
-                :data="page_data[selected_topic].user_keywords"
-                height="200px"
-              />
+              <div :style="styles.word_cloud_container">
+                <v-chart :init-options="word_cloud_option" :options="word_cloud_option" :style="styles.word_cloud" theme="macarons" />
+              </div>
             </el-card>
           </el-row>
         </el-col>
@@ -71,195 +91,140 @@
 </template>
 
 <script>
-import WordCloudChart from '../../components/Charts/WordCloudChart'
+import Echarts from 'vue-echarts/components/ECharts'
+require('echarts/theme/macarons') // echarts theme
+import 'echarts-wordcloud'
+import { getUserTopicInfo, getUserTopicList } from '../../api/user/topic'
 export default {
   name: 'Topic',
-  components: { WordCloudChart },
+  components: { 'v-chart': Echarts },
   data() {
     return {
-      page_data: require('../../data/user_topic.json'),
+      styles: {
+        topic_container: {
+          height: '750px'
+        },
+        user_view: {
+          height: '270px'
+        },
+        word_cloud_container: {
+          paddingLeft: '100px',
+          paddingRight: '100px'
+        },
+        word_cloud: {
+          height: '270px'
+        },
+        keywords: {
+          width: '270px'
+        },
+        participate: {
+          width: '270px'
+        },
+        heat: {
+          width: '270px'
+        },
+        heatbar: {
+          width: '270px'
+        },
+        startTime: {
+          width: '270px'
+        },
+        sensitive: {
+          width: '270px'
+        }
+      },
+      max_heat: 1,
       selected_topic: '',
-      percentage: 57,
-      related_topic: [
-        {
-          'id': 1,
-          'content': '加入反送中运动，表明港府应明确撤回逃犯条例修订草案，并撤回将6月9日百万人大游行定性为暴动之错误',
-          'hot': 128
+      related_topic: [],
+      leader_opinions: [],
+      word_cloud_option: {
+        title: {
+          text: this.title,
+          x: 'center'
         },
-        {
-          'id': 2,
-          'content': '梁振英：今天你还相信香港暴乱没推手吗？',
-          'hot': 75
-        },
-        {
-          'id': 3,
-          'content': '周庭黄之锋陈浩天等多位民主派人士因香港抗议被捕',
-          'hot': 74
-        },
-        {
-          'id': 4,
-          'content': '香港黄之锋等多名民主人士被捕 831游行被禁',
-          'hot': 62
-        },
-        {
-          'id': 5,
-          'content': '香港网民发起反修例示威 警方严阵以待',
-          'hot': 53
-        },
-        {
-          'id': 6,
-          'content': '从反送中开始延续到今日，香港社会经历了剧烈的动荡。人们担心随着国安法的推进，一国两制的内涵还会剩下多少。',
-          'hot': 42
-        },
-        {
-          'id': 7,
-          'content': '从《逃犯条例》修订到《国安法》，香港过去一年的得与失',
-          'hot': 33
-        },
-        {
-          'id': 8,
-          'content': '香港经济陷入深度衰退 预计将现最大单季跌幅',
-          'hot': 21
-        },
-        {
-          'id': 9,
-          'content': '香港的国民教育到底出了什么问题？',
-          'hot': 10
-        },
-        {
-          'id': 10,
-          'content': '内地经济稳增长 香港发展后盾强——香港专家解读中央经济工作会议',
-          'hot': 5
-        }
-      ],
-      leader_opinions: [
-        {
-          id: 1,
-          avatar: require('../../assets/imgs/60718250ly1fe7kog3jroj20f00f03zj.jpg'),
-          name: '头条新闻',
-          content: '【#黄之锋被捕#】据香港“星岛网”刚刚消息，乱港分子、“港独”组织前“香港众志”秘书长黄之锋今天（24日）中午到香港中区警署报到时再被拘捕，警方称黄之锋去年10月5日涉嫌参与未经批准集结及违反《禁止蒙面规例》。律师现正陪同录取口供。（环球网） ​',
-          hot: '15.2K',
-          time: '2020-10-16 21:04'
-        },
-        {
-          id: 2,
-          avatar: require('../../assets/imgs/6298156bly8g3fwy38yu7j20aa0aimxk.jpg'),
-          name: '早报网',
-          content: '【胡锡进：香港社会在如何走出困局问题上存在一些情绪】香港区议会选举结果今早陆续揭晓，《环球时报》总编辑胡锡进对此表示，投票结果反映了在如何走出当前困局的问题上，香港社会还存在一些情绪，影响了对这个重大问题的系统化思考。',
-          hot: '15.2K',
-          time: '2020-10-16 21:04'
-        },
-        {
-          id: 3,
-          avatar: require('../../assets/imgs/9ce4bf2fly1gdi8lnutcpj2050050q2y.jpg'),
-          name: '香港文匯網',
-          content: '【王毅:“一国两制”在香港行得通、办得到亦将得人心】国务委员兼外交部长王毅近日接受人民日报专访时表示，在香港问题上，我们坚定支持特区政府止暴制乱、恢复秩序、依法施政。时间将证明，“一国两制”在香港不仅行得通、办得到，也将得人心。但使龙城飞将在，不教胡马度阴山”，王毅表示，捍卫好国家的主权安全红线和正当发展权利，是中国外交以及外交战线全体人员肩负的使命，责任重大，不容有失。我们将在党中央的统一领导下，继续筑牢守护国家利益的坚固长城。',
-          hot: '15.2K',
-          time: '2020-10-16 21:04'
-        },
-        {
-          id: 4,
-          avatar: require('../../assets/imgs/a716fd45ly8gdijd1zmonj20sa0saaby.jpg'),
-          name: '人民日报',
-          content: '《人民锐评》发表评论文章指，香港的疫情控制好了，经济发展才有坚实基础。当务之急，是有效控制疫情，彻底清理本地个案。只要疫情控制住了，对通关的管制自然也没了。对于把内地正常管制措施说成是针对香港的举措，属于罔顾事实的无端指责，煽风点火，挑拨离间！',
-          hot: '15.2K',
-          time: '2020-10-16 21:04'
-        }
-      ],
-      word: [
-        {
-          name: '香港',
-          value: 0.7
-        },
-        {
-          name: '外国干涉',
-          value: 0.4
-        },
-        {
-          name: '黄之锋',
-          value: 0.1
-        },
-        {
-          name: '林郑月娥',
-          value: 0.05
-        },
-        {
-          name: '反修例',
-          value: 0.12
-        },
-        {
-          name: '国民教育',
-          value: 0.11
-        },
-        {
-          name: '北京',
-          value: 0.11
-        },
-        {
-          name: '中央政府',
-          value: 0.25
-        },
-        {
-          name: '国安法',
-          value: 0.2
-        },
-        {
-          name: '非法破坏',
-          value: 0.1
-        },
-        {
-          name: '暴乱',
-          value: 0.2
-        },
-        {
-          name: '暴力',
-          value: 0.03
-        },
-        {
-          name: '经济',
-          value: 0.04
-        },
-        {
-          name: '房地产',
-          value: 0.0001
-        },
-        {
-          name: '美国政府',
-          value: 0.04
-        },
-        {
-          name: '冲突',
-          value: 0.24
-        },
-        {
-          name: '学民思潮',
-          value: 0.12
-        },
-        {
-          name: '雨伞运动',
-          value: 0.01
-        },
-        {
-          name: '蒙面规例',
-          value: 0.001
-        },
-        {
-          name: '黑紫荆',
-          value: 0.0025
-        },
-        {
-          name: '众志',
-          value: 0.017
-        },
-        {
-          name: '抗争',
-          value: 0.2321
-        }
-      ]
+        backgroundColor: '#fff',
+        series: [
+          {
+            type: 'wordCloud',
+            gridSize: 10,
+            sizeRange: [14, 60],
+            rotationRange: [0, 0],
+            textStyle: {
+              normal: {
+                color: function() {
+                  return (
+                    'rgb(' +
+                    Math.round(Math.random() * 255) +
+                    ', ' +
+                    Math.round(Math.random() * 255) +
+                    ', ' +
+                    Math.round(Math.random() * 255) +
+                    ')'
+                  )
+                }
+              }
+            },
+            left: 'center',
+            top: 'center',
+            right: null,
+            bottom: null,
+            width: '100%',
+            height: '100%',
+            data: []
+          }
+        ]
+      }
     }
   },
-  mounted() {
-    this.selected_topic = Object.keys(this.page_data)[0]
+  computed: {
+    person() {
+      return this.$store.getters.person
+    }
+  },
+  created() {
+    window.addEventListener('resize', this.getHeight)
+    this.getHeight()
+  },
+  methods: {
+    format(percentage) {
+      return (percentage * this.max_heat / 100).toFixed(0)
+    },
+    getTopicList() {
+      return Promise.resolve(getUserTopicList(this.person).then(response => {
+        this.related_topic = response.data
+        this.selected_topic = this.related_topic[0].name
+        this.related_topic.forEach(topic => {
+          if (topic.totalHeat > this.max_heat) {
+            this.max_heat = topic.totalHeat
+          }
+        })
+        return Promise.resolve(response.data[0].name)
+      }))
+    },
+    getTopicInfo(topic) {
+      getUserTopicInfo(this.person, topic).then(response => {
+        this.leader_opinions = response.data.user_views
+        this.word_cloud_option.series[0].data = response.data.user_keywords
+      })
+    },
+    getHeight() {
+      this.styles.topic_container.height = (window.innerHeight - 50 - 32 - 1 - 55 - 20 - 20 - 1 - 32) + 'px'
+      this.styles.user_view.height = ((window.innerHeight - 50 - 32 - 25 - 32) * 0.6 - 1 - 55 - 20 - 20 - 1) + 'px'
+      this.styles.word_cloud.height = ((window.innerHeight - 50 - 32 - 25 - 32) * 0.4 - 1 - 55 - 20 - 20 - 1) + 'px'
+
+      this.styles.word_cloud_container.paddingLeft = (((window.innerWidth - 210 - 64) * 0.5 - 2 - 40 - 600) * 0.5) + 'px'
+      this.styles.word_cloud_container.paddingRight = (((window.innerWidth - 210 - 64) * 0.5 - 2 - 40 - 600) * 0.5) + 'px'
+
+      this.styles.keywords.width = ((window.innerWidth - 210 - 64) / 2 - 32 - 40 - 10 - 2 - 20) * 0.4 + 'px'
+      this.styles.participate.width = ((window.innerWidth - 210 - 64) / 2 - 32 - 40 - 10 - 2 - 20) * 0.2 + 'px'
+      this.styles.heat.width = ((window.innerWidth - 210 - 64) / 2 - 32 - 40 - 10 - 2 - 20) * 0.4 + 'px'
+      this.styles.heatbar.width = ((window.innerWidth - 210 - 64) / 2 - 32 - 40 - 10 - 2 - 20) * 0.4 - 48 + 'px'
+      this.styles.startTime.width = ((window.innerWidth - 210 - 64) / 2 - 32 - 40 - 10 - 2 - 20) * 0.4 + 'px'
+      this.styles.sensitive.width = ((window.innerWidth - 210 - 64) / 2 - 32 - 40 - 10 - 2 - 20) * 0.6 + 'px'
+      this.getTopicList().then(value => {
+        this.getTopicInfo(value)
+      })
+    }
   }
 }
 </script>
@@ -269,7 +234,27 @@ export default {
   padding: 32px
   background-color: rgb(240, 242, 245)
   position: relative
-  min-height: 918px
+
+.container
+  overflow-x: hidden
+  overflow-y: scroll
+
+.container::-webkit-scrollbar
+  width : 10px
+  height: 1px
+
+.container::-webkit-scrollbar-thumb
+  border-radius: 10px
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2)
+  background   : rgba(83, 83, 83, 0.5)
+
+.container::-webkit-scrollbar-track
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2)
+  border-radius: 10px
+  background   : #ededed
+
+.user-view-container
+  padding: 2px
 
 .image-container
   padding: 32px
@@ -287,39 +272,96 @@ export default {
   text-align: center
   position: relative
 
+.topic-list .topic-item:first-child .topic-index
+  background-color: #ff4655!important
+
+.topic-list .topic-item:nth-child(2) .topic-index
+  background-color: #ff975c!important
+
+.topic-list .topic-item:nth-child(3) .topic-index
+  background-color: #ffc15c!important
+
 .topic-list
 
   .topic-item
     margin: 10px 0
-    padding: 5px
+    padding: 10px
     min-height: 65px
     border: 1px solid #e6ebf5
     border-radius: 4px
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
 
+    .topic-titleline
+      margin-top: 0
+      margin-bottom: 5px
+      font-size: 1.6rem
+      display: -ms-flexbox
+      display: flex
+      -ms-flex-align: center
+      align-items: center
+      max-width: 100%
+
+    .topic-index
+      display: inline-block
+      min-width: 20px
+      text-align: center
+      font-size: 14px
+      color: #fff
+      border-radius: 3px
+      padding: 2px 0
+      white-space: nowrap
+      background-color: #54c1fc
+      margin-right: 8px
+      text-shadow: 0 1px 0 rgba(7,17,27,.2)
+
+    .topic-type
+      flex: 0 0 auto
+      max-width: 160px
+      display: inline-block
+      margin-right: 8px
+      font-size: 14px
+      color: #fff
+      background-color: #ec971f
+      border-radius: 3px
+      padding: 3px 4px
+      white-space: nowrap
+      text-shadow: 0 1px 0 rgba(7,17,27,.15)
+
     .topic-title
-      font-size: 20px
+      font-size: 18px
+      font-weight: 700
+      display: inline-block
+      color: #2f353b
+      transition: .3s
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      cursor: pointer
+
+    .topic-title:hover
+      color: #256bcc
+
+    .topic-content
+      overflow: hidden
+      height: 36px
+      margin-bottom: 5px
+
+    .topic-attrs
+      margin-bottom: 5px
+
+      .topic-attr
+        display: inline-block
+        padding-right: 10px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+
+    .topic-heat-bar
+      display: inline-block
+
     .topic-hot
       position: relative
       width: 100%
       text-align: right
 
-.option_item
-  border: 1px solid #e6ebf5
-  padding: 10px
-  border-radius: 4px
-  height: 150px
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
-  overflow: hidden
-
-  .option_name
-    font-size: 18px
-    font-weight: 700
-    margin-bottom: 5px
-
-  .option_content
-    display: -webkit-box
-    -webkit-line-clamp: 6
-    -webkit-box-orient: vertical
-    overflow: hidden
 </style>
