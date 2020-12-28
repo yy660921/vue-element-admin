@@ -24,14 +24,14 @@
                       <span>{{ topic.keywords.join("，") }}</span>
                     </div>
                     <div class="topic-attr" :style="styles.participate">
-                      <label>参与度：</label>
-                      <span>{{ topic.participate }}</span>
+                      <label>热度：</label>
+                      <span>{{ topic.totalHeat }}</span>
                     </div>
                     <div class="topic-attr" :style="styles.heat">
-                      <label>热度：</label>
+                      <label>参与度：</label>
                       <div class="topic-heat-bar" :style="styles.heatbar">
                         <el-progress
-                          :percentage="topic.totalHeat/ max_heat * 100"
+                          :percentage="topic.participate/ max_participate * 100"
                           :format="format"
                           :stroke-width="14"
                         />
@@ -133,7 +133,7 @@ export default {
           width: '270px'
         }
       },
-      max_heat: 1,
+      max_participate: 1,
       selected_topic: '',
       related_topic: [],
       leader_opinions: [],
@@ -187,15 +187,15 @@ export default {
   },
   methods: {
     format(percentage) {
-      return (percentage * this.max_heat / 100).toFixed(0)
+      return (percentage * this.max_participate / 100).toFixed(0)
     },
     getTopicList() {
       return Promise.resolve(getUserTopicList(this.person).then(response => {
         this.related_topic = response.data
         this.selected_topic = this.related_topic[0].name
         this.related_topic.forEach(topic => {
-          if (topic.totalHeat > this.max_heat) {
-            this.max_heat = topic.totalHeat
+          if (topic.participate > this.max_participate) {
+            this.max_participate = topic.participate
           }
         })
         return Promise.resolve(response.data[0].name)
