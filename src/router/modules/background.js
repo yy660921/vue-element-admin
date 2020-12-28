@@ -1,40 +1,34 @@
 import Layout from '@/layout'
 
-const topicRouter = {
-  path: '/topic',
+const backgroundRouter = {
+  path: '/background',
   component: Layout,
   redirect: '/dashboard',
-  name: 'Topic',
+  name: 'Background',
   meta: {
-    title: '议题画像',
-    icon: 'message'
+    title: '社会背景',
+    icon: 'education'
   },
   children: [
     {
       path: 'base',
       component: () => import('@/views/topic/base'), // Parent router-view
-      name: 'Topic_Base',
+      name: 'Background_Base',
       meta: { title: '基本情况' }
     },
     {
       path: 'topic',
       component: () => import('@/views/topic/topic'), // Parent router-view
-      name: 'Topic_Topic',
+      name: 'Background_Topic',
       meta: { title: '相关话题' }
     },
     {
       path: 'user',
       component: () => import('@/views/topic/user'), // Parent router-view
-      name: 'Topic_User',
+      name: 'Background_User',
       meta: { title: '关键用户' }
-    },
-    {
-      path: 'spread',
-      component: () => import('@/views/topic/spread'), // Parent router-view
-      name: 'Topic_Spread',
-      meta: { title: '扩散传播' }
     }
   ]
 }
 
-export default topicRouter
+export default backgroundRouter

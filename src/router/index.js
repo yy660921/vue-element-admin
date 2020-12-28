@@ -7,8 +7,10 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import userRouter from './modules/user'
+import userRouter from '@/router/modules/user'
 import topicRouter from '@/router/modules/topic'
+import backgroundRouter from '@/router/modules/background'
+import strategyRouter from '@/router/modules/strategy'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -77,7 +79,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/overview/dashboard'),
         name: '首页',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard' }
       }
     ]
   },
@@ -90,7 +92,7 @@ export const constantRoutes = [
         path: '',
         component: () => import('@/views/overview/user'),
         name: '用户概览',
-        meta: { title: '用户概览', icon: 'peoples', affix: true }
+        meta: { title: '用户概览', icon: 'peoples' }
       }
     ]
   },
@@ -104,24 +106,13 @@ export const constantRoutes = [
         path: '',
         component: () => import('@/views/overview/topic'),
         name: '议题概览',
-        meta: { title: '议题概览', icon: 'message', affix: true }
+        meta: { title: '议题概览', icon: 'message' }
       }
     ]
   },
   topicRouter,
-  {
-    path: '/overview/strategy',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/overview/strategy'),
-        name: '策略库',
-        meta: { title: '策略库', icon: 'form', affix: true }
-      }
-    ]
-  }
+  backgroundRouter,
+  strategyRouter
 ]
 
 /**

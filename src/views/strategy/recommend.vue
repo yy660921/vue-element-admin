@@ -24,7 +24,8 @@
               <el-form-item label="针对对象">
                 <el-radio-group v-model="searchForm.object">
                   <el-radio :label="'user'">用户</el-radio>
-                  <el-radio :label="'content'">内容</el-radio>
+                  <el-radio :label="'content'">议题</el-radio>
+                  <el-radio :label="'background'">社会背景</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="实施平台">
@@ -120,7 +121,7 @@
 
 <script>
 export default {
-  name: 'Strategy',
+  name: 'Recommand',
   data() {
     return {
       searchForm: {

@@ -20,11 +20,21 @@
                 <el-avatar v-if="user_info.avatar" :size="150" :src="user_info.avatar" />
                 <el-avatar v-if="!user_info.avatar" :size="150" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
               </el-col>
-              <el-col :md="8" :lg="8">
+              <el-col :md="10" :lg="10">
                 <div>
                   <div class="info_list">
                     <div class="info">
-                      <h2>{{ user_info.real_name }}</h2>
+                      <h2>{{ user_info.name }}</h2>
+                    </div>
+                    <div class="info">
+                      <el-row :gutter="8" class="info">
+                        <el-col :md="8" :lg="8">
+                          <span>真实姓名</span>
+                        </el-col>
+                        <el-col :md="16" :lg="16">
+                          <span>{{ user_info.real_name }}</span>
+                        </el-col>
+                      </el-row>
                     </div>
                     <div class="info">
                       <el-row :gutter="8" class="info">
@@ -33,16 +43,6 @@
                         </el-col>
                         <el-col :md="16" :lg="16">
                           <span>{{ user_info.age }}</span>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="info">
-                      <el-row :gutter="8" class="info">
-                        <el-col :md="8" :lg="8">
-                          <span>性别</span>
-                        </el-col>
-                        <el-col :md="16" :lg="16">
-                          <span>{{ user_info.gender }}</span>
                         </el-col>
                       </el-row>
                     </div>
@@ -69,7 +69,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :md="8" :lg="8">
+              <el-col :md="7" :lg="7">
                 <div style="float: right">
                   在本次事件中共参与{{ user_info.content_list ? user_info.content_list.length : 0 }}次
                 </div>
@@ -97,11 +97,7 @@
           <div slot="header">
             <span>立场变化</span>
           </div>
-          <el-row :gutter="32">
-            <el-col :md="24" :lg="24">
-              <v-chart :init-options="altitude_graph_option" :options="altitude_graph_option" :style="styles.altitude_graph_style" theme="macarons" />
-            </el-col>
-          </el-row>
+          <v-chart :init-options="altitude_graph_option" :options="altitude_graph_option" :style="styles.altitude_graph_style" theme="macarons" />
         </el-card>
       </el-col>
       <el-col :md="12" :lg="12">
@@ -200,8 +196,8 @@ export default {
       user_info: {},
       altitude_graph_option: {
         grid: {
-          x: 0,
-          y: 0,
+          x: 50,
+          y: 10,
           x2: 0,
           y2: 20
         },
@@ -296,6 +292,7 @@ export default {
     getUserBrief(user) {
       getUserBrief(this.person, user).then(response => {
         this.user_info = response.data
+        this.user_info.name = user
       })
     },
     click(e) {
