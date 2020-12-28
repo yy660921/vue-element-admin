@@ -116,11 +116,6 @@ export default {
               color: 'source',
               curveness: 0.3
             },
-            emphasis: {
-              lineStyle: {
-                width: 10
-              }
-            },
             zoom: 5
           }
         ]

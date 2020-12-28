@@ -5,12 +5,14 @@ const user = require('./user')
 const role = require('./role')
 const overview_home = require('./overview/home')
 const user_topic = require('./user/topic')
+const user_group = require('./user/group')
 
 const mocks = [
   ...user,
   ...role,
   ...overview_home,
-  ...user_topic
+  ...user_topic,
+  ...user_group
 ]
 
 // for front mock
